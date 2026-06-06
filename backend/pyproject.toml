@@ -1,0 +1,18 @@
+[project]
+name = "prh-company-search-backend"
+version = "1.0.0"
+authors = [{ name = "Jahangir", email = "jahangir_alam_99@hotmail.com" }]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+addopts = "--cov=app --cov-report=term-missing --cov-fail-under=80"
+
+[tool.ruff]
+line-length = 88
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP"]
+
+[tool.mypy]
+strict = true

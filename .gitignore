@@ -1,0 +1,37 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+.env
+htmlcov/
+.pytest_cache/
+dist/
+*.egg-info/
+.mypy_cache/
+.ruff_cache/
+
+# Node
+node_modules/
+dist/
+.env
+*.local
+
+# Playwright
+test-results/
+playwright-report/
+playwright/.cache/
+
+# Local Node.js runtime (dev only)
+.node/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+.DS_Store
+
+# Coverage
+coverage/
+.nyc_output/
+.coverage
+backend/.coverage

@@ -1,0 +1,13 @@
+{
+  "name": "prh-company-search",
+  "private": true,
+  "version": "1.0.0",
+  "author": "Jahangir <jahangir_alam_99@hotmail.com>",
+  "contributors": ["Jahangir <jahangir_alam_99@hotmail.com>"],
+  "scripts": {
+    "e2e": "playwright test"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.48.2"
+  }
+}

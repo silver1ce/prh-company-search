@@ -1,0 +1,148 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  lint-backend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: pip-${{ hashFiles('backend/requirements.txt', 'backend/requirements-dev.txt') }}
+      - name: Install dependencies
+        run: |
+          pip install -r backend/requirements.txt -r backend/requirements-dev.txt
+      - name: Ruff check
+        run: ruff check backend/
+      - name: Mypy check
+        working-directory: backend
+        run: mypy app
+
+  test-backend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: pip-${{ hashFiles('backend/requirements.txt', 'backend/requirements-dev.txt') }}
+      - name: Install dependencies
+        run: |
+          pip install -r backend/requirements.txt -r backend/requirements-dev.txt
+      - name: Run pytest
+        working-directory: backend
+        run: python -m pytest
+
+  lint-frontend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - name: Install dependencies
+        working-directory: frontend
+        run: npm ci
+      - name: Lint and typecheck
+        working-directory: frontend
+        run: npm run lint
+
+  test-frontend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - name: Install dependencies
+        working-directory: frontend
+        run: npm ci
+      - name: Run vitest
+        working-directory: frontend
+        run: npm test
+
+  e2e:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+          cache-dependency-path: |
+            frontend/package-lock.json
+            package-lock.json
+      - name: Install backend dependencies
+        run: pip install -r backend/requirements.txt
+      - name: Install frontend dependencies
+        working-directory: frontend
+        run: npm ci
+      - name: Install Playwright dependencies
+        run: |
+          npm ci
+          npx playwright install --with-deps chromium
+      - name: Start backend
+        working-directory: backend
+        run: |
+          uvicorn app.main:app --host 127.0.0.1 --port 3001 &
+          for i in $(seq 1 30); do
+            curl -sf http://127.0.0.1:3001/health && break
+            sleep 2
+          done
+      - name: Build and preview frontend
+        working-directory: frontend
+        run: |
+          npm run build
+          npm run preview -- --host 127.0.0.1 --port 5173 &
+          for i in $(seq 1 30); do
+            curl -sf http://127.0.0.1:5173 && break
+            sleep 2
+          done
+      - name: Run Playwright tests
+        run: npx playwright test
+        env:
+          CI: true
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - name: Install backend dependencies
+        run: pip install -r backend/requirements.txt
+      - name: Verify backend starts
+        working-directory: backend
+        run: |
+          timeout 10 uvicorn app.main:app --port 3001 || [ $? -eq 124 ]
+      - name: Build frontend
+        working-directory: frontend
+        run: |
+          npm ci
+          npm run build
+      - name: Verify dist exists
+        run: test -d frontend/dist
