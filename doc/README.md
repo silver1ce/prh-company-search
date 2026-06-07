@@ -9,6 +9,7 @@
 
 | Document | Description |
 |----------|-------------|
+| [Business overview](business-overview.md) | Plain-language guide for non-technical leaders |
 | [Getting started](getting-started.md) | Prerequisites, installation, first run |
 | [Development guide](development.md) | Daily dev workflow, demo searches, URLs |
 | [Configuration](configuration.md) | Environment variables, API reference |
