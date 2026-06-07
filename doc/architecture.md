@@ -59,7 +59,7 @@ prh-company-search/
 │   └── vite.config.ts           # dev + preview proxy to :3001
 ├── e2e/search.spec.ts           # Playwright
 ├── .github/workflows/ci.yml
-├── doc/                         # This documentation (local, not on GitHub yet)
+├── doc/                         # Project documentation
 ├── Makefile
 └── README.md
 ```

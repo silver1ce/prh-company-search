@@ -3,8 +3,6 @@
 **Suomeksi:** PRH Yrityshaku — projektin dokumentaatio  
 **English:** Documentation index for running, testing, and maintaining this project.
 
-> These files are stored locally in `doc/` and are **not yet on GitHub**. Review and confirm before publishing.
-
 ---
 
 ## Document index

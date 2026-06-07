@@ -53,17 +53,17 @@ Commit style: [Conventional Commits](https://www.conventionalcommits.org/) — e
 
 ---
 
-## Publishing the `doc/` folder
+## Documentation
 
-The `doc/` folder is currently **local only**. When ready to publish:
+Project documentation lives in the [`doc/`](../doc/) folder on GitHub:
 
-```bash
-git add doc/
-git commit -m "docs: add project documentation"
-git push origin main
-```
-
-Review all files in `doc/` before committing.
+- [Documentation index](../doc/README.md)
+- [Getting started](../doc/getting-started.md)
+- [Development guide](../doc/development.md)
+- [Configuration](../doc/configuration.md)
+- [Testing guide](../doc/testing.md)
+- [Architecture](../doc/architecture.md)
+- [Troubleshooting](../doc/troubleshooting.md)
 
 ---
 
