@@ -1,3 +1,8 @@
+# Use project-local Node/npm when system npm is missing (see doc/getting-started.md)
+ifneq (,$(wildcard .node/bin/npm))
+export PATH := $(CURDIR)/.node/bin:$(PATH)
+endif
+
 install:
 	cd backend && python -m venv .venv && .venv/bin/pip install -r requirements.txt -r requirements-dev.txt
 	cd frontend && npm install

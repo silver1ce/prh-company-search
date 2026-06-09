@@ -2,10 +2,26 @@
 
 ## Installation issues
 
-### `npm: command not found`
+### `npm: command not found` (common in VS Code on macOS)
 
-Install Node.js 20+ from https://nodejs.org/, or use nvm:
+**Cause:** Node.js/npm is not on your terminal PATH. VS Code may only see `node` without `npm`.
 
+**Fix A — use Makefile from project root (easiest):**
+```bash
+cd /path/to/prh-company-search
+make dev
+```
+The Makefile adds `.node/bin/` to PATH automatically when that folder exists.
+
+**Fix B — export PATH before manual npm commands:**
+```bash
+export PATH="/path/to/prh-company-search/.node/bin:$PATH"
+npm --version   # should print 10.x
+```
+
+**Fix C — install Node.js 20+ LTS** from https://nodejs.org/ (permanent fix).
+
+**Fix D — use nvm:**
 ```bash
 nvm install 20
 nvm use 20

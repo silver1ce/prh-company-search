@@ -10,7 +10,23 @@
 | Make | any (optional) | `make --version` |
 | Git | any | `git --version` |
 
-**macOS tip:** If `npm` is not found, install Node from https://nodejs.org/ or use the project’s local Node at `.node/bin/` if present.
+**macOS / VS Code tip:** If `npm: command not found` appears in the terminal, use one of these fixes:
+
+1. **Recommended** — run from the **project root** (not the `frontend` folder):
+   ```bash
+   cd /path/to/prh-company-search
+   make dev
+   ```
+   The Makefile automatically uses the project’s local Node at `.node/bin/` when system `npm` is missing.
+
+2. **Manual frontend** — add local Node to your PATH first:
+   ```bash
+   export PATH="/path/to/prh-company-search/.node/bin:$PATH"
+   cd frontend
+   npm run dev
+   ```
+
+3. **Permanent fix** — install Node.js 20+ LTS from https://nodejs.org/ (then `npm` works everywhere).
 
 ---
 
@@ -70,9 +86,13 @@ Default values work for local development. See [configuration.md](configuration.
 
 ## 4. Run the application
 
+**Always start from the project root** (folder that contains `Makefile`, `backend/`, and `frontend/`):
+
 ```bash
 make dev
 ```
+
+This starts both backend and frontend in one terminal. Do **not** run `npm run dev` inside `frontend/` unless `npm` is on your PATH (see macOS tip above).
 
 Or manually in two terminals:
 
@@ -85,6 +105,7 @@ uvicorn app.main:app --reload --port 3001
 
 **Terminal 2 — Frontend:**
 ```bash
+export PATH="/path/to/prh-company-search/.node/bin:$PATH"   # if npm not found
 cd frontend
 npm run dev
 ```
